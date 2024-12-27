@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Whiz - Admin Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --dark-color: #1a1a2e;
+            --light-color: #f0f3ff;
+        }
+
+        body {
+            background: var(--dark-color);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-250px);
+            }
+            .content {
+                margin-left: 0;
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .nav-link {
+            color: white;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            margin: 5px 15px;
+            padding: 10px 15px;
+        }
+
+        .nav-link:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 1;
+        }
+
+        .stats-card {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .table {
+            color: var(--light-color);
+        }
+
+        .table th {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .glow {
+            position: relative;
+        }
+
+        .glow::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 15px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            z-index: -1;
+            filter: blur(15px);
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="p-3 text-center">
+            <i class="fas fa-code fa-3x text-white mb-3 animate__animated animate__bounceIn"></i>
+            <h4 class="text-white mb-4">Code Whiz</h4>
+        </div>
+        <nav class="nav flex-column">
+            <a class="nav-link active" href="#"><i class="fas fa-home me-2"></i>Dashboard</a>
+            <a class="nav-link" href="#"><i class="fas fa-tasks me-2"></i>Quizzes</a>
+            <a class="nav-link" href="#"><i class="fas fa-question-circle me-2"></i>Questions</a>
+            <a class="nav-link" href="#"><i class="fas fa-users me-2"></i>Users</a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content text-light">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="animate__animated animate__fadeIn">Dashboard Overview</h2>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="card stats-card glow animate__animated animate__fadeInUp">
+                    <div class="card-body">
+                        <h6 class="card-title">Total Quizzes</h6>
+                        <h2 class="mb-0">24</h2>
+                        <small class="text-white-50">+3 this week</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card glow animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
+                    <div class="card-body">
+                        <h6 class="card-title">Active Users</h6>
+                        <h2 class="mb-0">156</h2>
+                        <small class="text-white-50">+12 today</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card glow animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+                    <div class="card-body">
+                        <h6 class="card-title">Questions</h6>
+                        <h2 class="mb-0">348</h2>
+                        <small class="text-white-50">Across all quizzes</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card glow animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
+                    <div class="card-body">
+                        <h6 class="card-title">Completion Rate</h6>
+                        <h2 class="mb-0">78%</h2>
+                        <div class="progress mt-2">
+                            <div class="progress-bar" style="width: 78%; background: rgba(255,255,255,0.5)"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="row g-4">
+            <div class="col-md-8">
+                <div class="card glow animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
+                    <div class="card-body">
+                        <h5 class="card-title text-white mb-4">Recent Quiz Attempts</h5>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Quiz</th>
+                                        <th>Score</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>John Doe</td>
+                                        <td>Python Basics</td>
+                                        <td>85%</td>
+                                        <td>2 hours ago</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sarah Smith</td>
+                                        <td>React Fundamentals</td>
+                                        <td>92%</td>
+                                        <td>3 hours ago</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mike Johnson</td>
+                                        <td>Node.js Basics</td>
+                                        <td>78%</td>
+                                        <td>5 hours ago</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card glow animate__animated animate__fadeInUp" style="animation-delay: 0.5s">
+                    <div class="card-body">
+                        <h5 class="card-title text-white mb-4">Popular Categories</h5>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Python</span>
+                            <span>45%</span>
+                        </div>
+                        <div class="progress mb-4">
+                            <div class="progress-bar" style="width: 45%; background: var(--primary-color)"></div>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>React</span>
+                            <span>30%</span>
+                        </div>
+                        <div class="progress mb-4">
+                            <div class="progress-bar" style="width: 30%; background: var(--secondary-color)"></div>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Node.js</span>
+                            <span>25%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 25%; background: var(--primary-color)"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
