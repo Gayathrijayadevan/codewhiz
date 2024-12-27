@@ -129,20 +129,27 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="p-3 text-center">
-            <i class="fas fa-code fa-3x text-white mb-3 animate__animated animate__bounceIn"></i>
-            <h4 class="text-white mb-4">Code Whiz</h4>
-        </div>
-        <nav class="nav flex-column">
-            <a class="nav-link active" href="#"><i class="fas fa-home me-2"></i>Dashboard</a>
-            <a class="nav-link" href="#"><i class="fas fa-tasks me-2"></i>Quizzes</a>
-            <a class="nav-link" href="#"><i class="fas fa-question-circle me-2"></i>Questions</a>
-            <a class="nav-link" href="#"><i class="fas fa-users me-2"></i>Users</a>
-        </nav>
-    </div>
+   <!-- Sidebar Toggle Button -->
+<button class="sidebar-toggle">
+    <i class="fas fa-bars"></i>
+</button>
 
+<!-- Overlay for mobile -->
+<div class="sidebar-overlay"></div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="p-3 text-center">
+        <i class="fas fa-code fa-3x text-white mb-3 animate__animated animate__bounceIn"></i>
+        <h4 class="text-white mb-4">Code Whiz</h4>
+    </div>
+    <nav class="nav flex-column">
+        <a class="nav-link active" href="../"><i class="fas fa-home me-2"></i>Dashboard</a>
+        <a class="nav-link" href="quize"><i class="fas fa-tasks me-2"></i>Quizzes</a>
+        <a class="nav-link" href="#"><i class="fas fa-question-circle me-2"></i>Questions</a>
+        <a class="nav-link" href="#"><i class="fas fa-users me-2"></i>Users</a>
+    </nav>
+</div>
     <!-- Main Content -->
     <div class="content text-light">
         <!-- Header -->

@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Category(models.Model):
-    name = models.CharField(max_length=100)  # Python, React, Node.js etc.
+    name = models.CharField(max_length=100) 
     description = models.TextField()
 
     def __str__(self):
@@ -12,9 +12,12 @@ class Quiz(models.Model):
     title = models.CharField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.TextField()
-    time_limit = models.IntegerField()  # in minutes
+    time_limit = models.IntegerField()  
     created_at = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
+    status = models.TextField(null=True, blank=True)
+    @property
+    def total_questions(self):
+       return self.question_set.count()
 
     def __str__(self):
         return self.title

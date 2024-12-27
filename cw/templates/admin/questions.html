@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Whiz - Question Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --dark-color: #1a1a2e;
+            --light-color: #f0f3ff;
+        }
+
+        body {
+            background: var(--dark-color);
+            min-height: 100vh;
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .choice-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        .choice-item.correct {
+            border-left: 4px solid #28a745;
+        }
+
+        .tag {
+            background: rgba(78, 84, 200, 0.2);
+            color: #8f94fb;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .search-filter {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .btn-action {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="content text-light p-4">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="animate__animated animate__fadeIn">Question Bank</h2>
+            <button class="btn btn-primary animate__animated animate__fadeIn">
+                <i class="fas fa-plus me-2"></i>Add New Question
+            </button>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <div class="search-filter animate__animated animate__fadeInUp">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <input type="text" class="form-control bg-transparent text-white" placeholder="Search questions...">
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select bg-transparent text-white">
+                        <option value="">All Quizzes</option>
+                        <option>Python Basics</option>
+                        <option>React Fundamentals</option>
+                        <option>Node.js Essentials</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select bg-transparent text-white">
+                        <option value="">Difficulty Level</option>
+                        <option>Easy</option>
+                        <option>Medium</option>
+                        <option>Hard</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-outline-light w-100">Apply Filters</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Questions List -->
+        <div class="questions-list">
+            {% for q in ques %}
+           <div class="question-card p-4 animate__animated animate__fadeInUp">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="tag">{{q.quiz.category.name }}</span>
+                            <span class="badge bg-secondary">{{q.points}}</span>
+                        </div>
+                        <h5>{{q.question_text}}?</h5>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-action btn-sm">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-action btn-sm">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="choices mt-3">
+                    <div class="choice-item correct">
+                        <i class="fas fa-check me-2 text-success"></i>
+                        <span>&lt;class 'list'&gt;</span>
+                    </div>
+                    <div class="choice-item">
+                        <i class="fas fa-times me-2 text-danger"></i>
+                        <span>&lt;class 'array'&gt;</span>
+                    </div>
+                    <div class="choice-item">
+                        <i class="fas fa-times me-2 text-danger"></i>
+                        <span>&lt;class 'tuple'&gt;</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
