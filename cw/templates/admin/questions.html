@@ -19,7 +19,32 @@
             background: var(--dark-color);
             min-height: 100vh;
         }
-
+        .sidebar {
+            background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-250px);
+            }
+            .content {
+                margin-left: 0;
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+        }
         .question-card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -75,10 +100,24 @@
     </style>
 </head>
 <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="p-3 text-center">
+            <i class="fas fa-code fa-3x text-white mb-3 animate__animated animate__bounceIn"></i>
+            <h4 class="text-white mb-4">Code Whiz</h4>
+        </div>
+        <nav class="nav flex-column">
+            <a class="nav-link active" href="../" style="color: aliceblue;"><i class="fas fa-home me-2"></i>Dashboard</a>
+            <a class="nav-link" href="quize" style="color: aliceblue;"><i class="fas fa-tasks me-2"></i>Quizzes</a>
+            <a class="nav-link" href="qns" style="color: aliceblue;"><i class="fas fa-question-circle me-2"></i>Questions</a>
+            <a class="nav-link" href="#" style="color: aliceblue;"><i class="fas fa-users me-2"></i>Users</a>
+        </nav>
+    </div>
+    
     <div class="content text-light p-4">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="animate__animated animate__fadeIn">Question Bank</h2>
+            <h2 class="animate__animated animate__fadeIn">Questions</h2>
             <button class="btn btn-primary animate__animated animate__fadeIn">
                 <i class="fas fa-plus me-2"></i>Add New Question
             </button>

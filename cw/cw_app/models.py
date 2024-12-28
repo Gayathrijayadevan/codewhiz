@@ -57,3 +57,5 @@ class UserAnswer(models.Model):
 
     def __str__(self):
         return f"{self.attempt.user.username} - {self.question.question_text[:30]}"
+    
+    

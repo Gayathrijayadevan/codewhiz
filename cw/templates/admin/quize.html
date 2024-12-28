@@ -8,7 +8,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
-        /* [Previous styles remain the same as admin dashboard] */
         :root {
             --primary-color: #4e54c8;
             --secondary-color: #8f94fb;
@@ -184,7 +183,7 @@
         <nav class="nav flex-column">
             <a class="nav-link active" href="../"><i class="fas fa-home me-2"></i>Dashboard</a>
             <a class="nav-link" href="quize"><i class="fas fa-tasks me-2"></i>Quizzes</a>
-            <a class="nav-link" href="#"><i class="fas fa-question-circle me-2"></i>Questions</a>
+            <a class="nav-link" href="qns"><i class="fas fa-question-circle me-2"></i>Questions</a>
             <a class="nav-link" href="#"><i class="fas fa-users me-2"></i>Users</a>
         </nav>
     </div>
@@ -204,14 +203,14 @@
         <div class="search-bar mb-4 animate__animated animate__fadeInUp">
             <div class="row g-3">
                 <div class="col-md-4">
-                    <input type="text" class="form-control bg-transparent text-white" placeholder="Search quizzes...">
+                    <input type="text" class="form-control bg-transparent text-light" placeholder="Search quizzes...">
                 </div>
                 <div class="col-md-3">
                     <select class="form-select filter-dropdown">
-                        <option value="">All Categories</option>
-                        <option value="python" style="color: black;">Python</option>
-                        <option value="react"style="color: black;">React</option>
-                        <option value="nodejs" style="color: black;">Node.js</option>
+                        <option value="" style="color: black;">All Categories</option>
+                        {% for c in categ %}
+                            <option value="python" style="color: black;">{{c.name}}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
@@ -243,6 +242,11 @@
                                 <a href="edit_quize/{{q.pk}}">
                                     <button class="btn btn-outline-light btn-sm">
                                         <i class="fas fa-edit me-2"></i>Edit
+                                    </button>
+                                </a>
+                                <a href="del_quize/{{q.pk}}">
+                                    <button class="btn  btn-outline-light btn-action btn-sm" style="margin-left: 10px;">
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </a>
                             </div>

@@ -38,7 +38,8 @@ def u_home(req):
 def quize(req):
     if 'admin' in req.session:
         quize=Quiz.objects.all()
-        return render( req,'admin/quize.html',{'quiz':quize})
+        cate=Category.objects.all()
+        return render( req,'admin/quize.html',{'quiz':quize,'categ':cate})
     
 def add_quiz(req):
     if 'admin' in req.session:
@@ -80,6 +81,12 @@ def edit_quiz(req,qid):
         cate=Category.objects.all()
         data = Quiz.objects.get(pk=qid)
         return render(req, 'admin/edit_quiz.html', {'data': data,'cate':cate})
+    
+def delete_quiz(req,qid):
+    data=Quiz.objects.get(pk=qid)
+    data.delete()
+    return redirect(quize)    
+
 
 def questions(req):
     qns=Question.objects.all()
