@@ -3,10 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CodeWhiz - Learn Coding Through Quizzes</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1A1A2E;
+            --secondary: #7209B7;
+            --accent: #4361EE;
+            --highlight: #4CC9F0;
+            --light: #F8F9FA;
+            --gradient: linear-gradient(135deg, #7209B7, #4361EE);
+        }
+
+        body {
+            background-color: var(--light);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .bounce-in {
+            animation: bounceIn 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .navbar {
+            background: var(--primary) !important;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            color: var(--highlight) !important;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            color: white !important;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            opacity: 1;
+            color: var(--highlight) !important;
+        }
+
+        .hero-section {
+            background: var(--gradient);
+            color: white;
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 10px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border-top: 4px solid;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card:nth-child(1) { border-color: var(--secondary); }
+        .stat-card:nth-child(2) { border-color: var(--accent); }
+        .stat-card:nth-child(3) { border-color: var(--highlight); }
+
+        .stat-card h3 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .quiz-card {
+            background: white;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .quiz-card .card-header {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            padding: 20px;
+            border: none;
+        }
+
+        .btn-code {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-code:hover {
+            background: var(--secondary);
+            transform: scale(1.05);
+            color: white;
+        }
+
+        .code-badge {
+            background: var(--highlight);
+            color: var(--primary);
+            font-weight: 500;
+            padding: 8px 15px;
+        }
+
+        .progress {
+            height: 1.5rem;
+            background-color: #e9ecef;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: var(--gradient);
+        }
+
+        .list-group-item {
+            border-left: 4px solid var(--accent);
+            margin-bottom: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            padding: 15px;
+        }
+
+        .list-group-item:hover {
+            background-color: var(--light);
+            transform: translateX(5px);
+        }
+
+        .profile-section {
+            background: white;
+            padding: 60px 0;
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+    </style>
 </head>
 <body>
-    <a href="logout"><button>logout</button></a>
-    user home
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand bounce-in" href="#"><i class="fas fa-code fa-2x text-white mb-3 animate__animated animate__bounceIn"><h4 class="text-white mb-4">Code Whiz</h4></i></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">My Quizzes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section fade-in">
+        <div class="container text-center">
+            <h1 class="display-4 mb-4">Welcome to CodeWhiz</h1>
+            <p class="lead">Level up your coding skills with interactive challenges</p>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4 col-sm-6">
+                <div class="stat-card bounce-in">
+                    <h3>12</h3>
+                    <p>Challenges Completed</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="stat-card bounce-in" style="animation-delay: 0.2s">
+                    <h3>85%</h3>
+                    <p>Success Rate</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="stat-card bounce-in" style="animation-delay: 0.4s">
+                    <h3>5</h3>
+                    <p>Achievement Badges</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Available Quizzes -->
+    <section class="container py-5">
+        <h2 class="section-title text-center">Coding Challenges</h2>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card quiz-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Python Mastery</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Test your Python skills with advanced programming challenges.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge code-badge">10 Challenges</span>
+                            <button class="btn btn-code">Start</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card quiz-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">JavaScript Pro</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Master JavaScript with practical coding exercises.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge code-badge">15 Challenges</span>
+                            <button class="btn btn-code">Start</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card quiz-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Data Structures</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Tackle complex data structure problems and algorithms.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge code-badge">12 Challenges</span>
+                            <button class="btn btn-code">Start</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center">
+                    <img src="/api/placeholder/150/150" alt="Profile" class="rounded-circle mb-3">
+                    <h3>Your Progress</h3>
+                    <div class="progress mt-3">
+                        <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h3>Recent Activity</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item">Completed Python Challenge - Score: 90%</li>
+                        <li class="list-group-item">Earned "Algorithm Master" Badge</li>
+                        <li class="list-group-item">Started JavaScript Advanced Track</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
