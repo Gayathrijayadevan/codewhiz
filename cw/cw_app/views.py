@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import *
 from django.contrib.auth import authenticate,login,logout
+from django.db.models import Q
+
 
 # Create your views here.
 def cw_login(req):
@@ -31,15 +33,41 @@ def cw_logout(req):
     logout(req)
     req.session.flush() 
     return redirect(cw_login)        
-    
-def u_home(req):
-    return render( req,'user/u_home.html')
+
+def a_home(req):
+    total_quizzes = Quiz.objects.count()
+    total_questions=Question.objects.count()
+    cate=Category.objects.all()
+    return render( req,'admin/a_home.html', {'c':cate,'quizes':total_quizzes,'qns':total_questions})   
 
 def quize(req):
     if 'admin' in req.session:
+        search_query = req.GET.get('search', '')
+        category_filter = req.GET.get('category', '')
+        if category_filter.isdigit():
+            category_filter = int(category_filter)  
+    
         quize=Quiz.objects.all()
+        if search_query:
+            quize = quize.filter(
+                Q(title__icontains=search_query) |
+                Q(description__icontains=search_query)
+            )
+
+        if category_filter:
+            quize = quize.filter(category__id=category_filter)
         cate=Category.objects.all()
-        return render( req,'admin/quize.html',{'quiz':quize,'categ':cate})
+        context = {
+            'quiz': quize,
+            'categ': cate,
+            'search_query': search_query,
+            'selected_category': category_filter
+        }
+    
+        if req.headers.get('HX-Request'):
+            return render(req, 'admin/partial_quize.html', context)   
+        
+        return render(req, 'admin/quize.html', context) 
     
 def add_quiz(req):
     if 'admin' in req.session:
@@ -87,10 +115,26 @@ def delete_quiz(req,qid):
     data.delete()
     return redirect(quize)    
 
+def questions(req, qid):
+    qns = Question.objects.filter(quiz=qid).prefetch_related('choice_set')
+    return render(req, 'admin/questions.html', {'ques': qns})
 
-def questions(req):
-    qns=Question.objects.all()
-    return render(req,'admin/questions.html',{'ques':qns})
+def edit_qns(req,cid):
+    if req.method == 'POST':
+        que=req.POST['title']
+        choice=req.POST['category']
+        correct=req.POST['descrip']  
+        choi = Choice.objects.get(pk=cid)
+
+        choi. question =Question.objects.get(question_text=que)
+        choi.choice_text=choice
+        choi.is_correct=correct
+
+        choi.save()
+        return redirect(questions)
+    else:
+        data = Quiz.objects.get(pk=cid)
+        return render(req, 'admin/edit_quiz.html', {'data': data})
 
 #-------------------------user---------------------
 def register(req):
@@ -108,8 +152,10 @@ def register(req):
     else:
         return render(req,'user/register.html') 
 
-def a_home(req):
-    return render( req,'admin/a_home.html')
+def u_home(req):
+    return render( req,'user/u_home.html')
+
+
         
 
 

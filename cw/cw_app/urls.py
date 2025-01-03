@@ -6,11 +6,11 @@ urlpatterns=[
     path('logout',views.cw_logout),
     path('register',views.register),
     path('a_home',views.a_home),
-    path('quize',views.quize),        
+    path('quize', views.quize, name='quize'),    
     path('add_quize',views.add_quiz),
     path('edit_quize/<qid>',views.edit_quiz),
     path('del_quize/<qid>',views.delete_quiz),
-    path('qns',views.questions),
+    path('qns/<qid>',views.questions),
 #--------------user-----------------------------
     path('u_home',views.u_home),
 

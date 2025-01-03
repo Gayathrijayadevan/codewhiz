@@ -183,7 +183,6 @@
         <nav class="nav flex-column">
             <a class="nav-link active" href="../"><i class="fas fa-home me-2"></i>Dashboard</a>
             <a class="nav-link" href="quize"><i class="fas fa-tasks me-2"></i>Quizzes</a>
-            <a class="nav-link" href="qns"><i class="fas fa-question-circle me-2"></i>Questions</a>
             <a class="nav-link" href="#"><i class="fas fa-users me-2"></i>Users</a>
         </nav>
     </div>
@@ -201,64 +200,92 @@
 
         <!-- Search and Filter Bar -->
         <div class="search-bar mb-4 animate__animated animate__fadeInUp">
-            <div class="row g-3">
+            <form hx-get="{% url 'quize' %}" 
+                  hx-trigger="submit, change from:#category-filter"
+                  hx-target="#quiz-list-container"
+                  hx-push-url="true"
+                  class="row g-3">
                 <div class="col-md-4">
-                    <input type="text" class="form-control bg-transparent text-light" placeholder="Search quizzes...">
+                    <input type="text" 
+                           name="search" 
+                           class="form-control bg-transparent text-light" 
+                           placeholder="Search quizzes..."
+                           value="{{ search_query }}"
+                           id="search-input">
                 </div>
                 <div class="col-md-3">
-                    <select class="form-select filter-dropdown">
-                        <option value="" style="color: black;">All Categories</option>
-                        {% for c in categ %}
-                            <option value="python" style="color: black;">{{c.name}}</option>
+                    <select name="category" 
+                            id="category-filter" 
+                            class="form-select filter-dropdown">
+                        <option value="">All Categories</option>
+                        {% for category in categ %}
+                            <option value="{{ category.id }}" 
+                                {% if category.id == selected_category %}selected{% endif %}
+                            style="color: black;">
+                                {{ category.name }}
+                            </option>
                         {% endfor %}
                     </select>
                 </div>
-            </div>
+                <div class="col-md-3">
+                    <select class="form-select bg-transparent text-white">
+                        <option value="">Difficulty Level</option>
+                        <option>Easy</option>
+                        <option>Medium</option>
+                        <option>Hard</option>
+                    </select>
+                </div>
+            </form>
         </div>
 
         <!-- Quiz List -->
-        <div class="row g-4">
-            <!-- Quiz Card 1 -->
-             {% for q in quiz %}
-                <div class="col-md-6 animate__animated animate__fadeInUp">
-                    <div class="quiz-card p-4">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div>
-                                <h4>{{q.title}}</h4>
-                                <span class="text-white-50">{{q.total_questions}} Questions | {{q.time_limit}} Minutes</span>
+        <div id="quiz-list-container">
+            <div class="row g-4">
+                {% for q in quiz %}
+                    <div class="col-md-6 animate__animated animate__fadeInUp">
+                        <div class="quiz-card p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h4>{{q.title}}</h4>
+                                    <span class="text-white-50">{{q.total_questions}} Questions | {{q.time_limit}} Minutes</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="progress" style="height: 5px;">
-                                <div class="progress-bar bg-success" style="width: 85%"></div>
+                            <div class="mb-3">
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar bg-success" style="width: 85%"></div>
+                                </div>
+                                <small class="text-white-50">85% Completion Rate</small>
                             </div>
-                            <small class="text-white-50">85% Completion Rate</small>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="me-3"><i class="fas fa-user me-2"></i>156 Attempts</span>
-                            </div>
-                            <div class="btn-group">
-                                <a href="edit_quize/{{q.pk}}">
-                                    <button class="btn btn-outline-light btn-sm">
-                                        <i class="fas fa-edit me-2"></i>Edit
-                                    </button>
-                                </a>
-                                <a href="del_quize/{{q.pk}}">
-                                    <button class="btn  btn-outline-light btn-action btn-sm" style="margin-left: 10px;">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </a>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="me-3"><i class="fas fa-user me-2"></i>156 Attempts</span><br> <br>
+                                    <a href="qns/{{q.pk}}"><button class="btn btn-outline-light btn-sm">View Questions</button></a>
+                                </div>
+                                <div class="btn-group">
+                                    <a href="edit_quize/{{q.pk}}">
+                                        <button class="btn btn-outline-light btn-sm">
+                                            <i class="fas fa-edit me-2"></i>Edit
+                                        </button>
+                                    </a>
+                                    <a href="del_quize/{{q.pk}}">
+                                        <button class="btn btn-outline-light btn-action btn-sm" style="margin-left: 10px;">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-
-            <!-- More quiz cards... -->
+                {% endfor %}
+            </div>
         </div>
 
-        <!-- Pagination -->
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.10/htmx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+<!-- Pagination -->
         <!-- <div class="d-flex justify-content-center mt-4">
             <nav>
                 <ul class="pagination">
@@ -274,8 +301,4 @@
                 </ul>
             </nav>
         </div> -->
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+        

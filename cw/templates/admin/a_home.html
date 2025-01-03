@@ -145,8 +145,7 @@
     </div>
     <nav class="nav flex-column">
         <a class="nav-link active" href="../"><i class="fas fa-home me-2"></i>Dashboard</a>
-        <a class="nav-link" href="quize"><i class="fas fa-tasks me-2"></i>Quizzes</a>
-        <a class="nav-link" href="qns"><i class="fas fa-question-circle me-2"></i>Questions</a>
+        <a class="nav-link" href="quize"><i class="fas fa-tasks me-2"></i>Quizzes and Questions</a>
         <a class="nav-link" href="#"><i class="fas fa-users me-2"></i>Users</a>
     </nav>
 </div>
@@ -163,8 +162,8 @@
                 <div class="card stats-card glow animate__animated animate__fadeInUp">
                     <div class="card-body">
                         <h6 class="card-title">Total Quizzes</h6>
-                        <h2 class="mb-0">24</h2>
-                        <small class="text-white-50">+3 this week</small>
+                        <h2 class="mb-0">{{quizes}}</h2>
+                        <small class="text-white-50">Across all Categories</small>
                     </div>
                 </div>
             </div>
@@ -181,7 +180,7 @@
                 <div class="card stats-card glow animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
                     <div class="card-body">
                         <h6 class="card-title">Questions</h6>
-                        <h2 class="mb-0">348</h2>
+                        <h2 class="mb-0">{{qns}}</h2>
                         <small class="text-white-50">Across all quizzes</small>
                     </div>
                 </div>
@@ -244,27 +243,11 @@
                 <div class="card glow animate__animated animate__fadeInUp" style="animation-delay: 0.5s">
                     <div class="card-body">
                         <h5 class="card-title text-white mb-4">Popular Categories</h5>
-                        <div class="d-flex justify-content-between mb-3">
-                            <span>Python</span>
-                            <span>45%</span>
+                        {% for c in c %}
+                        <div class="d-flex justify-content-between mb-3 text-white">
+                                <span>{{c.name}}</span>
                         </div>
-                        <div class="progress mb-4">
-                            <div class="progress-bar" style="width: 45%; background: var(--primary-color)"></div>
-                        </div>
-                        <div class="d-flex justify-content-between mb-3">
-                            <span>React</span>
-                            <span>30%</span>
-                        </div>
-                        <div class="progress mb-4">
-                            <div class="progress-bar" style="width: 30%; background: var(--secondary-color)"></div>
-                        </div>
-                        <div class="d-flex justify-content-between mb-3">
-                            <span>Node.js</span>
-                            <span>25%</span>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar" style="width: 25%; background: var(--primary-color)"></div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
