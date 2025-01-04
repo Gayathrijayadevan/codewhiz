@@ -44,10 +44,13 @@ def quize(req):
     if 'admin' in req.session:
         search_query = req.GET.get('search', '')
         category_filter = req.GET.get('category', '')
+        status_filter = req.GET.get('status', '')  
+        
         if category_filter.isdigit():
             category_filter = int(category_filter)  
     
-        quize=Quiz.objects.all()
+        quize = Quiz.objects.all()
+        
         if search_query:
             quize = quize.filter(
                 Q(title__icontains=search_query) |
@@ -56,18 +59,31 @@ def quize(req):
 
         if category_filter:
             quize = quize.filter(category__id=category_filter)
-        cate=Category.objects.all()
+            
+        if status_filter:
+            quize = quize.filter(status=status_filter)
+            
+        cate = Category.objects.all()
+        
+        difficulty_choices = [
+            ('easy', 'Easy'),
+            ('medium', 'Medium'),
+            ('hard', 'Hard')
+        ]
+        
         context = {
             'quiz': quize,
             'categ': cate,
             'search_query': search_query,
-            'selected_category': category_filter
+            'selected_category': category_filter,
+            'selected_status': status_filter,
+            'difficulty_choices': difficulty_choices
         }
     
         if req.headers.get('HX-Request'):
             return render(req, 'admin/partial_quize.html', context)   
         
-        return render(req, 'admin/quize.html', context) 
+        return render(req, 'admin/quize.html', context)
     
 def add_quiz(req):
     if 'admin' in req.session:
@@ -119,23 +135,53 @@ def questions(req, qid):
     qns = Question.objects.filter(quiz=qid).prefetch_related('choice_set')
     return render(req, 'admin/questions.html', {'ques': qns})
 
-def edit_qns(req,cid):
+def add_qns(req):
+    if 'admin' in req.session:
+        if req.method=='POST':
+            quiz=req.POST['quiz']
+            option1=req.POST['option1']
+            option2=req.POST['option2']
+            option3=req.POST['option3']
+            option4=req.POST['option4']
+            point=req.POST['points']
+            correct_opt=req.POST['correct']
+            quizz=Quiz.objects.get(pk=quiz)
+            data=Question.objects.create(quiz=quiz,option1=option1,option2=option2,option3=option3,option4=option4,
+                                points= point,is_correct=correct_opt)
+            data.save()
+            return redirect(questions)
+        else:
+            quize=Quiz.objects.all()
+            return render(req,'admin/add_qns.html',{'qui':quize})
+        
+    else:
+        return redirect(cw_login)  
+    
+def edit_qns(req,qid):
     if req.method == 'POST':
-        que=req.POST['title']
-        choice=req.POST['category']
-        correct=req.POST['descrip']  
-        choi = Choice.objects.get(pk=cid)
+        quiz=req.POST['quiz']
+        option1=req.POST['option1']
+        option2=req.POST['option2']
+        option3=req.POST['option3']
+        option4=req.POST['option4']
+        point=req.POST['points']
+        correct_opt=req.POST['correct'] 
+        ques = Question.objects.get(pk=qid)
 
-        choi. question =Question.objects.get(question_text=que)
-        choi.choice_text=choice
-        choi.is_correct=correct
+        ques. quiz=Quiz.objects.get(title=quiz)
+        ques.option1=option1
+        ques.option2=option2
+        ques.option3 =option3
+        ques.option4 =option4
+        ques.points =point
+        ques.is_correct=correct_opt
 
-        choi.save()
+        ques.save()
         return redirect(questions)
     else:
-        data = Quiz.objects.get(pk=cid)
-        return render(req, 'admin/edit_quiz.html', {'data': data})
-
+        quz= Quiz.objects.get(pk=qid).title
+        data = Question.objects.get(pk=qid)
+        return render(req, 'admin/edit_quiz.html', {'data': data,'quiz':quz})
 #-------------------------user---------------------
 def register(req):
     if req.method=='POST':

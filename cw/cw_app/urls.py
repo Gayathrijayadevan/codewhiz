@@ -11,6 +11,8 @@ urlpatterns=[
     path('edit_quize/<qid>',views.edit_quiz),
     path('del_quize/<qid>',views.delete_quiz),
     path('qns/<qid>',views.questions),
+    path('add_qns',views.add_qns),
+
 #--------------user-----------------------------
     path('u_home',views.u_home),
 

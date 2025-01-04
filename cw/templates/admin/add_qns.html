@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Whiz - Quiz Management</title>
+    <title>add quiz</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
@@ -30,47 +30,51 @@
 </head>
 <body>
     <div class="container mt-5"style=" background: white; border-radius: 15px; padding: 30px;">
-        <h2 class="text-center mb-4" style="color: #0e1527; font-weight: bold;">Add New Product</h2>
+        <h2 class="text-center mb-4" style="color: #0e1527; font-weight: bold;">Add Questions</h2>
         <form action="" method="post" class="p-4 shadow-sm bg-white rounded" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 <label for="quiz" class="form-label"><b>quiz</b></label>
                         <select class="form-control" id="quiz" name="quiz" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
-                            <option value="{{data.quiz.title}}">{{data.quiz.title}}</option>
-                            {% for q in quiz %}
-                            <option value="{{q.pk}}">{{ q.title }}</option>
+                            <option value=""></option>
+                            {% for q in qui %}
+                            <option value="{{c.pk}}">{{ q.title }}</option>
                             {% endfor %}
                       </select>
             </div>
+            <div class="form-group">
+                <label for="pid"><b>Question</b></label>
+                <textarea class="form-control" name="question" id="question" rows="3" placeholder="Enter question"></textarea style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
+                </div>
 
             <div class="form-group">
                 <label for="pid"><b>Option1</b></label>
-                <input type="text" class="form-control" name="option1" id="option1"  value="{{data.option1}}" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
+                <input type="text" class="form-control" name="option1" id="option1" placeholder="Enter option 1" value="" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
             </div>
 
             <div class="form-group">
                 <label for="pid"><b>Option2</b></label>
-                <input type="text" class="form-control" name="option2" id="option2"  value="{{data.option2}}" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
+                <input type="text" class="form-control" name="option2" id="option2" placeholder="Enter option 2" value="" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
             </div>
 
             <div class="form-group">
                 <label for="pid"><b>Option3</b></label>
-                <input type="text" class="form-control" name="option3" id="option3"  value="{{data.option3}}" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
+                <input type="text" class="form-control" name="option3" id="option3" placeholder="Enter option 3" value="" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
             </div>
 
             <div class="form-group">
                 <label for="pid"><b>Option4</b></label>
-                <input type="text" class="form-control" name="option4" id="option4"  value="{{data.option4}}" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
+                <input type="text" class="form-control" name="option4" id="option4" placeholder="Enter option 4" value="" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
             </div>
 
             <div class="form-group">
                 <label for="name"><b>Points</b></label>
-                <input type="text" class="form-control" name="points" id="points" value="{{data.points}}" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
+                <input type="text" class="form-control" name="points" id="points"placeholder="Enter point" value="" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
             </div>
 
             <div class="form-group">
                 <label for="name"><b>Correct Option</b></label>
-                <input type="text" class="form-control" name="correct" id="correct" value="{{data.is_correct}}" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
+                <input type="text" class="form-control" name="correct" id="correct" value="" placeholder="Enter correct option"style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
             </div>
             
             <button type="submit" class="btn btn-primary btn-block" style="background: #3498db; border: none; border-radius: 30px; padding: 10px; font-size: 1.1rem; font-weight: bold; transition: background 0.3s;"

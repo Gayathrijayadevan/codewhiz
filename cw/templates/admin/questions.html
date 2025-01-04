@@ -65,7 +65,9 @@
             margin: 5px 0;
             transition: all 0.3s ease;
         }
-
+        .choice-item h6{
+            display: block;
+        }
         .choice-item.correct {
             border-left: 4px solid #28a745;
         }
@@ -108,8 +110,7 @@
         </div>
         <nav class="nav flex-column">
             <a class="nav-link active" href="../" style="color: aliceblue;"><i class="fas fa-home me-2"></i>Dashboard</a>
-            <a class="nav-link" href="quize" style="color: aliceblue;"><i class="fas fa-tasks me-2"></i>Quizzes</a>
-            <a class="nav-link" href="qns" style="color: aliceblue;"><i class="fas fa-question-circle me-2"></i>Questions</a>
+            <a class="nav-link" href="quize" style="color: aliceblue;"><i class="fas fa-tasks me-2"></i>Quizzes & Questions</a>
             <a class="nav-link" href="#" style="color: aliceblue;"><i class="fas fa-users me-2"></i>Users</a>
         </nav>
     </div>
@@ -118,9 +119,11 @@
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="animate__animated animate__fadeIn">Questions</h2>
-            <button class="btn btn-primary animate__animated animate__fadeIn">
-                <i class="fas fa-plus me-2"></i>Add New Question
-            </button>
+            <a href="../add_qns">
+                <button class="btn btn-primary animate__animated animate__fadeIn">
+                    <i class="fas fa-plus me-2"></i>Add New Question
+                </button>
+            </a>
         </div>
 
         <!-- Search and Filter Section -->
@@ -147,7 +150,7 @@
                         <div class="choices mt-3">
                             {% for choice in q.choice_set.all %}
                                 <div class="choice-item {% if choice.is_correct %}correct{% endif %}">
-                                    <span>{{ choice.choice_text}}</span>
+                                    <h6>{{ choice.choice_text}}</h6>
                                     {% if choice.is_correct %}
                                         <i class="fas fa-check text-success ms-2"></i>
                                     {% endif %}
