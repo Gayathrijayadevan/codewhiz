@@ -38,7 +38,7 @@
                         <select class="form-control" id="quiz" name="quiz" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
                             <option value=""></option>
                             {% for q in qui %}
-                            <option value="{{c.pk}}">{{ q.title }}</option>
+                                <option value="{{q.pk}}">{{ q.title }}</option>                       
                             {% endfor %}
                       </select>
             </div>
@@ -77,9 +77,11 @@
                 <input type="text" class="form-control" name="correct" id="correct" value="" placeholder="Enter correct option"style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
             </div>
             
-            <button type="submit" class="btn btn-primary btn-block" style="background: #3498db; border: none; border-radius: 30px; padding: 10px; font-size: 1.1rem; font-weight: bold; transition: background 0.3s;"
+            <a href="add_qns">
+                <button type="submit" class="btn btn-primary btn-block" style="background: #3498db; border: none; border-radius: 30px; padding: 10px; font-size: 1.1rem; font-weight: bold; transition: background 0.3s;"
             onmouseover="this.style.background='#2980b9';"
             onmouseout="this.style.background='#3498db';">Add</button>
+            </a>
         </form>
     </div>
 </body>

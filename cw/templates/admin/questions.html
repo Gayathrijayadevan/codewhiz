@@ -148,20 +148,23 @@
                         <h5>{{q.question_text}}?</h5>
                         
                         <div class="choices mt-3">
-                            {% for choice in q.choice_set.all %}
-                                <div class="choice-item {% if choice.is_correct %}correct{% endif %}">
-                                    <h6>{{ choice.choice_text}}</h6>
-                                    {% if choice.is_correct %}
-                                        <i class="fas fa-check text-success ms-2"></i>
-                                    {% endif %}
+                            <h6>Options:</h6>
+                                <div class="choice-item ">
+                                    <h6>{{ q.option1 }}</h6>
+                                    <h6>{{ q.option2 }}</h6>
+                                    <h6>{{ q.option3 }}</h6> 
+                                    <h6>{{ q.option4 }}</h6>
                                 </div>
-                            {% endfor %}
+                                <h6>Correct option:{{ q.is_correct }} <i class="fas fa-check text-success ms-2"></i></h6> 
+                                <h6>points:{{q.points}}</h6>
                         </div>
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-action btn-sm">
-                            <i class="fas fa-edit"></i>
-                        </button>
+                        <a href="{% url 'edit_qns' q.pk %}">
+                            <button class="btn btn-action btn-sm">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </a>
                         <button class="btn btn-action btn-sm">
                             <i class="fas fa-trash"></i>
                         </button>

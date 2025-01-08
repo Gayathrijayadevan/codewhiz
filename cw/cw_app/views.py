@@ -40,7 +40,7 @@ def a_home(req):
     cate=Category.objects.all()
     return render( req,'admin/a_home.html', {'c':cate,'quizes':total_quizzes,'qns':total_questions})   
 
-def quize(req):
+def quizze(req):
     if 'admin' in req.session:
         search_query = req.GET.get('search', '')
         category_filter = req.GET.get('category', '')
@@ -96,7 +96,7 @@ def add_quiz(req):
             cat=Category.objects.get(pk=cate)
             data=Quiz.objects.create(title=title,category=cat,description=des,time_limit=time,status=stat)
             data.save()
-            return redirect(quize)
+            return redirect(quizze)
         else:
             cate=Category.objects.all()
             return render(req,'admin/add_quiz.html',{'cate':cate})
@@ -120,7 +120,7 @@ def edit_quiz(req,qid):
         quiz.status =stat
 
         quiz.save()
-        return redirect(quize)
+        return redirect(quizze)
     else:
         cate=Category.objects.all()
         data = Quiz.objects.get(pk=qid)
@@ -129,37 +129,49 @@ def edit_quiz(req,qid):
 def delete_quiz(req,qid):
     data=Quiz.objects.get(pk=qid)
     data.delete()
-    return redirect(quize)    
+    return redirect(quizze)    
 
 def questions(req, qid):
-    qns = Question.objects.filter(quiz=qid).prefetch_related('choice_set')
+    qns = Question.objects.filter(quiz=qid)
     return render(req, 'admin/questions.html', {'ques': qns})
+
 
 def add_qns(req):
     if 'admin' in req.session:
-        if req.method=='POST':
-            quiz=req.POST['quiz']
-            option1=req.POST['option1']
-            option2=req.POST['option2']
-            option3=req.POST['option3']
-            option4=req.POST['option4']
-            point=req.POST['points']
-            correct_opt=req.POST['correct']
-            quizz=Quiz.objects.get(pk=quiz)
-            data=Question.objects.create(quiz=quiz,option1=option1,option2=option2,option3=option3,option4=option4,
-                                points= point,is_correct=correct_opt)
-            data.save()
-            return redirect(questions)
+        if req.method == 'POST':
+            quiz_id = req.POST.get('quiz')
+            question_text = req.POST.get('question')
+            option1 = req.POST.get('option1')
+            option2 = req.POST.get('option2')
+            option3 = req.POST.get('option3')
+            option4 = req.POST.get('option4')
+            points = req.POST.get('points')  # Default to 1 if points are missing
+            correct_opt = req.POST.get('correct')
+            quiz=Quiz.objects.get(pk=quiz_id)
+
+            # Create the `Question` object
+            data = Question.objects.create(
+                    quiz=quiz,
+                    question_text=question_text,
+                    option1=option1,
+                    option2=option2,
+                    option3=option3,
+                    option4=option4,
+                    points=int(points),  # Convert points to integer
+                    is_correct=correct_opt
+                )
+            return redirect(quizze)  # Replace with the name of your questions page
+            
         else:
-            quize=Quiz.objects.all()
-            return render(req,'admin/add_qns.html',{'qui':quize})
-        
+            quize = Quiz.objects.all()
+            return render(req, 'admin/add_qns.html', {'qui': quize})
     else:
-        return redirect(cw_login)  
-    
+        return redirect(cw_login)  # Redirect to the login page if not authenticated
+
 def edit_qns(req,qid):
     if req.method == 'POST':
         quiz=req.POST['quiz']
+        question_text = req.POST.get('question')
         option1=req.POST['option1']
         option2=req.POST['option2']
         option3=req.POST['option3']
@@ -169,6 +181,7 @@ def edit_qns(req,qid):
         ques = Question.objects.get(pk=qid)
 
         ques. quiz=Quiz.objects.get(title=quiz)
+        ques.question_text=question_text
         ques.option1=option1
         ques.option2=option2
         ques.option3 =option3
@@ -177,11 +190,11 @@ def edit_qns(req,qid):
         ques.is_correct=correct_opt
 
         ques.save()
-        return redirect(questions)
+        return redirect(questions)    
     else:
-        quz= Quiz.objects.get(pk=qid).title
+        quize = Quiz.objects.all()
         data = Question.objects.get(pk=qid)
-        return render(req, 'admin/edit_quiz.html', {'data': data,'quiz':quz})
+        return render(req, 'admin/edit_questions.html', {'data': data,'qui': quize})
 #-------------------------user---------------------
 def register(req):
     if req.method=='POST':

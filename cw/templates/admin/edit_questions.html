@@ -44,6 +44,11 @@
             </div>
 
             <div class="form-group">
+                <label for="pid"><b>Question</b></label>
+                <textarea class="form-control" name="question" id="question"  rows="3" >{{data.question_text}}</textarea style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
+            </div>
+
+            <div class="form-group">
                 <label for="pid"><b>Option1</b></label>
                 <input type="text" class="form-control" name="option1" id="option1"  value="{{data.option1}}" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
             </div>
@@ -73,9 +78,11 @@
                 <input type="text" class="form-control" name="correct" id="correct" value="{{data.is_correct}}" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
             </div>
             
-            <button type="submit" class="btn btn-primary btn-block" style="background: #3498db; border: none; border-radius: 30px; padding: 10px; font-size: 1.1rem; font-weight: bold; transition: background 0.3s;"
+            <a href="{% url 'edit_qns' q.pk %}">
+                <button type="submit" class="btn btn-primary btn-block" style="background: #3498db; border: none; border-radius: 30px; padding: 10px; font-size: 1.1rem; font-weight: bold; transition: background 0.3s;"
             onmouseover="this.style.background='#2980b9';"
-            onmouseout="this.style.background='#3498db';">Add</button>
+            onmouseout="this.style.background='#3498db';">Edit</button>
+            </a>
         </form>
     </div>
 </body>
