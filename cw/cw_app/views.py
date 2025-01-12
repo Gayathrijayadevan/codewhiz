@@ -132,9 +132,12 @@ def delete_quiz(req,qid):
     return redirect(quizze)    
 
 def questions(req, qid):
+    print(f"Incoming qid type: {type(qid)}, value: {qid}")
     qns = Question.objects.filter(quiz=qid)
+    print(f"Questions found: {qns.count()}")
+    for q in qns:
+        print(f"Question {q.pk} for quiz {q.quiz.id}")
     return render(req, 'admin/questions.html', {'ques': qns})
-
 
 def add_qns(req):
     if 'admin' in req.session:
@@ -195,6 +198,11 @@ def edit_qns(req,qid):
         quize = Quiz.objects.all()
         data = Question.objects.get(pk=qid)
         return render(req, 'admin/edit_questions.html', {'data': data,'qui': quize})
+
+def delete_qns(req,qid):
+    data=Question.objects.get(pk=qid)
+    data.delete()
+    return redirect(questions)    
 #-------------------------user---------------------
 def register(req):
     if req.method=='POST':
@@ -212,7 +220,53 @@ def register(req):
         return render(req,'user/register.html') 
 
 def u_home(req):
-    return render( req,'user/u_home.html')
+       data=Quiz.objects.all()[:3]
+       return render( req,'user/u_home.html',{'qdata':data})
+
+def user_quizes(req)       :
+    if 'user' in req.session:
+        search_query = req.GET.get('search', '')
+        category_filter = req.GET.get('category', '')
+        status_filter = req.GET.get('status', '')  
+        
+        if category_filter.isdigit():
+            category_filter = int(category_filter)  
+    
+        quize = Quiz.objects.all()
+        
+        if search_query:
+            quize = quize.filter(
+                Q(title__icontains=search_query) |
+                Q(description__icontains=search_query)
+            )
+
+        if category_filter:
+            quize = quize.filter(category__id=category_filter)
+            
+        if status_filter:
+            quize = quize.filter(status=status_filter)
+            
+        cate = Category.objects.all()
+        
+        difficulty_choices = [
+            ('easy', 'Easy'),
+            ('medium', 'Medium'),
+            ('hard', 'Hard')
+        ]
+        
+        context = {
+            'quiz': quize,
+            'categ': cate,
+            'search_query': search_query,
+            'selected_category': category_filter,
+            'selected_status': status_filter,
+            'difficulty_choices': difficulty_choices
+        }
+    
+        if req.headers.get('HX-Request'):
+            return render(req, 'admin/partial_quize.html', context)   
+        
+        return render(req, 'user/quizzes.html', context)
 
 
         

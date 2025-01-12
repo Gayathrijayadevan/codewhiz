@@ -109,7 +109,7 @@
             <h4 class="text-white mb-4">Code Whiz</h4>
         </div>
         <nav class="nav flex-column">
-            <a class="nav-link active" href="../" style="color: aliceblue;"><i class="fas fa-home me-2"></i>Dashboard</a>
+            <a class="nav-link active" href="../a_home" style="color: aliceblue;"><i class="fas fa-home me-2"></i>Dashboard</a>
             <a class="nav-link" href="quize" style="color: aliceblue;"><i class="fas fa-tasks me-2"></i>Quizzes & Questions</a>
             <a class="nav-link" href="#" style="color: aliceblue;"><i class="fas fa-users me-2"></i>Users</a>
         </nav>
@@ -160,14 +160,16 @@
                         </div>
                     </div>
                     <div class="btn-group">
-                        <a href="{% url 'edit_qns' q.pk %}">
+                        <a href="{% url 'edit_qns' qid=q.pk|add:'0' %}">
                             <button class="btn btn-action btn-sm">
                                 <i class="fas fa-edit"></i>
                             </button>
                         </a>
-                        <button class="btn btn-action btn-sm">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <a href="del_qns/{{q.pk}}">
+                            <button class="btn btn-action btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>

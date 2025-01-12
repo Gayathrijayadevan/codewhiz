@@ -201,7 +201,7 @@
                         <a class="nav-link active" href="#">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">My Quizzes</a>
+                        <a class="nav-link" href="u_quiz">Quizzes</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Profile</a>
@@ -248,50 +248,24 @@
 
     <!-- Available Quizzes -->
     <section class="container py-5">
-        <h2 class="section-title text-center">Coding Challenges</h2>
+        <h2 class="section-title text-center">Popular Quizes</h2>
         <div class="row">
+        {% for q in qdata %}    
             <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card quiz-card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Python Mastery</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">Test your Python skills with advanced programming challenges.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge code-badge">10 Challenges</span>
-                            <button class="btn btn-code">Start</button>
+                    <div class="card quiz-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">{{q.title}}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{q.description}}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge code-badge">{{q.total_questions}}</span>
+                                <button class="btn btn-code">Start</button>
+                            </div>
                         </div>
                     </div>
-                </div>
             </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card quiz-card">
-                    <div class="card-header">
-                        <h5 class="mb-0">JavaScript Pro</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">Master JavaScript with practical coding exercises.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge code-badge">15 Challenges</span>
-                            <button class="btn btn-code">Start</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card quiz-card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Data Structures</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">Tackle complex data structure problems and algorithms.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge code-badge">12 Challenges</span>
-                            <button class="btn btn-code">Start</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        {% endfor %}    
         </div>
     </section>
 
