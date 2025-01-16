@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeWhiz - My Quizzes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        .form-check-input[type="radio"] {
+            visibility: visible !important;
+            opacity: 1 !important;
+            position: relative !important;
+            display: inline-block !important;
+        }
+        
+        .form-check {
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+        }
+        
+        .form-check-label {
+            margin-left: 5px !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand bounce-in" href="#"><i class="fas fa-code fa-2x text-white mb-3 animate__animated animate__bounceIn"><h4 class="text-white mb-4">Code Whiz</h4></i></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">My Quizzes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>   
+
+
+        {% block content %}
+        <div class="container my-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                            <h2 class="mb-0">{{ quiz.title }}</h2>
+                            <div id="timer" class="badge bg-warning text-dark fs-5">
+                                Time: <span id="minutes">--</span>:<span id="seconds">--</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <div class="alert alert-info mb-4">
+                                <h5>Quiz Information:</h5>
+                                <p>{{ quiz.description }}</p>
+                                <p>Category: {{ quiz.category.name }}</p>
+                                <p>Time Limit: {{ quiz.time_limit }} minutes</p>
+                                <p>Total Questions: {{ quiz.total_questions }}</p>
+                            </div>
+
+                            <form id="quizForm">
+                                {% csrf_token %}
+                                {% for question in questions %}
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Question {{ forloop.counter }} ({{ question.points }} point{{ question.points|pluralize }})</h5>
+                                        <p class="card-text">{{ question.question_text }}</p>
+                                        <div class="form-check mb-2">
+                                            <input type="radio" 
+                                                class="form-check-input" 
+                                                name="question_{{ question.id }}" 
+                                                id="q{{ question.id }}_1"
+                                                value="option1" 
+                                                required>
+                                            <label class="form-check-label" for="q{{ question.id }}_1">
+                                                {{ question.option1 }}
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check mb-2">
+                                            <input type="radio" 
+                                                class="form-check-input" 
+                                                name="question_{{ question.id }}" 
+                                                id="q{{ question.id }}_1"
+                                                value="option2" 
+                                                required>
+                                            <label class="form-check-label" for="q{{ question.id }}_1">
+                                                {{ question.option2 }}
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="form-check mb-2">
+                                            <input type="radio" 
+                                                class="form-check-input" 
+                                                name="question_{{ question.id }}" 
+                                                id="q{{ question.id }}_1"
+                                                value="option3" 
+                                                required>
+                                            <label class="form-check-label" for="q{{ question.id }}_1">
+                                                {{ question.option3 }}
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check mb-2">
+                                            <input type="radio" 
+                                                class="form-check-input" 
+                                                name="question_{{ question.id }}" 
+                                                id="q{{ question.id }}_1"
+                                                value="option4" 
+                                                required>
+                                            <label class="form-check-label" for="q{{ question.id }}_1">
+                                                {{ question.option4 }}
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                
+                                <button type="submit" class="btn btn-primary">Submit Quiz</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Modal -->
+        <div class="modal fade" id="resultModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Quiz Results</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h4 class="text-center mb-4">Your Results</h4>
+                        <div class="result-details">
+                            <p>Score: <span id="score">0</span>/<span id="totalPoints">0</span></p>
+                            <p>Percentage: <span id="percentage">0</span>%</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{% url 'u_quiz' %}" class="btn btn-primary">Back to Quiz List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endblock %}
+
+        {% block extra_js %}
+        <script>
+        // Timer functionality
+        let remainingSeconds = {{ remaining_seconds }};
+
+        function updateTimer() {
+            const minutes = Math.floor(remainingSeconds / 60);
+            const seconds = remainingSeconds % 60;
+            
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+            
+            if (remainingSeconds <= 0) {
+                submitQuiz();
+            } else {
+                remainingSeconds--;
+            }
+        }
+
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // Quiz submission
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitQuiz();
+        });
+
+        function submitQuiz() {
+            const form = document.getElementById('quizForm');
+            const answers = {};
+            
+            // Collect all answers
+            form.querySelectorAll('input[type="radio"]:checked').forEach(input => {
+                const questionId = input.name.split('_')[1];
+                answers[questionId] = input.value;
+                console.log(`Question ${questionId}: selected ${input.value}`);  // Add debugging
+            });
+            
+            console.log('Submitting answers:', answers);  // Add debugging
+            
+            // Submit answers
+            fetch('{% url "submit_quiz" quiz.id %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({
+                    answers: answers
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response:', data);  // Add debugging
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+                
+                // Update results
+                document.getElementById('score').textContent = data.score;
+                document.getElementById('totalPoints').textContent = data.total_points;
+                document.getElementById('percentage').textContent = data.percentage;
+                
+                // Show modal
+                new bootstrap.Modal(document.getElementById('resultModal')).show();
+            })
+            // .catch(error => {
+            //     console.error('Error:', error);
+            //     alert('An error occurred while submitting the quiz.');
+            // });
+        }
+        </script>
+        {% endblock %}
+            
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

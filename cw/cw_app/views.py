@@ -1,9 +1,14 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.utils import timezone
 from django.contrib.auth.models import User
 from .models import *
 from django.contrib.auth import authenticate,login,logout
 from django.db.models import Q
+import json
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
@@ -38,7 +43,10 @@ def a_home(req):
     total_quizzes = Quiz.objects.count()
     total_questions=Question.objects.count()
     cate=Category.objects.all()
-    return render( req,'admin/a_home.html', {'c':cate,'quizes':total_quizzes,'qns':total_questions})   
+    user=User.objects.exclude(last_login=None).count()
+    attempts=QuizAttempt.objects.all()
+    return render( req,'admin/a_home.html', {'c':cate,'quizes':total_quizzes,'qns':total_questions,'u':user,
+                                             'attempts':attempts})   
 
 def quizze(req):
     if 'admin' in req.session:
@@ -84,6 +92,8 @@ def quizze(req):
             return render(req, 'admin/partial_quize.html', context)   
         
         return render(req, 'admin/quize.html', context)
+    else:
+        return redirect(a_home)
     
 def add_quiz(req):
     if 'admin' in req.session:
@@ -148,11 +158,10 @@ def add_qns(req):
             option2 = req.POST.get('option2')
             option3 = req.POST.get('option3')
             option4 = req.POST.get('option4')
-            points = req.POST.get('points')  # Default to 1 if points are missing
+            points = req.POST.get('points')  
             correct_opt = req.POST.get('correct')
             quiz=Quiz.objects.get(pk=quiz_id)
 
-            # Create the `Question` object
             data = Question.objects.create(
                     quiz=quiz,
                     question_text=question_text,
@@ -160,16 +169,16 @@ def add_qns(req):
                     option2=option2,
                     option3=option3,
                     option4=option4,
-                    points=int(points),  # Convert points to integer
+                    points=int(points),  
                     is_correct=correct_opt
                 )
-            return redirect(quizze)  # Replace with the name of your questions page
+            return redirect(quizze)  
             
         else:
             quize = Quiz.objects.all()
             return render(req, 'admin/add_qns.html', {'qui': quize})
     else:
-        return redirect(cw_login)  # Redirect to the login page if not authenticated
+        return redirect(cw_login)  
 
 def edit_qns(req,qid):
     if req.method == 'POST':
@@ -192,8 +201,8 @@ def edit_qns(req,qid):
         ques.points =point
         ques.is_correct=correct_opt
 
-        ques.save()
-        return redirect(questions)    
+        ques.save() 
+        return redirect(quizze) 
     else:
         quize = Quiz.objects.all()
         data = Question.objects.get(pk=qid)
@@ -202,7 +211,11 @@ def edit_qns(req,qid):
 def delete_qns(req,qid):
     data=Question.objects.get(pk=qid)
     data.delete()
-    return redirect(questions)    
+    return redirect(quizze)    
+
+def view_users(req):
+    user_data=User.objects.all()
+    return render(req,'admin/view_users.html',{'users':user_data})
 #-------------------------user---------------------
 def register(req):
     if req.method=='POST':
@@ -220,10 +233,13 @@ def register(req):
         return render(req,'user/register.html') 
 
 def u_home(req):
-       data=Quiz.objects.all()[:3]
-       return render( req,'user/u_home.html',{'qdata':data})
+    data=Quiz.objects.all()[:3]
+    categ_count=Category.objects.count()
+    total_quizzes = Quiz.objects.count()
+    categ=Category.objects.all()
+    return render( req,'user/u_home.html',{'qdata':data,'cate':categ,'c_count':categ_count,'q_count':total_quizzes})
 
-def user_quizes(req)       :
+def user_quizes(req):
     if 'user' in req.session:
         search_query = req.GET.get('search', '')
         category_filter = req.GET.get('category', '')
@@ -264,11 +280,106 @@ def user_quizes(req)       :
         }
     
         if req.headers.get('HX-Request'):
-            return render(req, 'admin/partial_quize.html', context)   
+            return render(req, 'user/filter_result.html', context)   
         
         return render(req, 'user/quizzes.html', context)
+    
+@login_required
+def take_quiz(request, quiz_id):
+    quiz = get_object_or_404(Quiz, id=quiz_id)
+    
+    attempt = QuizAttempt.objects.filter(
+        user=request.user,
+        quiz=quiz,
+        completed=False
+    ).first()
+    
+    if not attempt:
+        attempt = QuizAttempt.objects.create(
+            user=request.user,
+            quiz=quiz,
+            start_time=timezone.now()
+        )
+    
+    questions = Question.objects.filter(quiz=quiz)
+    
+    elapsed_time = timezone.now() - attempt.start_time
+    remaining_seconds = max(0, quiz.time_limit * 60 - elapsed_time.total_seconds())
+    
+    context = {
+        'quiz': quiz,
+        'questions': questions,
+        'attempt': attempt,
+        'remaining_seconds': int(remaining_seconds)
+    }
+    
+    return render(request, 'user/quize_dtl.html', context)
 
-
+@login_required
+@csrf_exempt
+def submit_quiz(request, quiz_id):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid request method'})
+    
+    quiz = get_object_or_404(Quiz, id=quiz_id)
+    attempt = get_object_or_404(
+        QuizAttempt, 
+        user=request.user, 
+        quiz=quiz, 
+        completed=False
+    )
+    
+    try:
+        data = json.loads(request.body)
+        answers = data.get('answers', {})
         
+        score = 0
+        total_points = 0
+        
+        # Process each answer
+        for question in quiz.question_set.all():
+            total_points += question.points
+            selected_option = answers.get(str(question.id))
+            
+            if selected_option:
+                # Get the actual text of the selected answer
+                selected_text = getattr(question, selected_option, '')
+                
+                is_correct = selected_text == question.is_correct
 
+                UserAnswer.objects.create(
+                    attempt=attempt,
+                    question=question,
+                    selected_choice=selected_text,
+                    is_correct=is_correct
+                )
+                
+                if is_correct:
+                    score += question.points
+        
+        attempt.score = score
+        attempt.completed = True
+        attempt.end_time = timezone.now()
+        attempt.save()
+        
+        percentage = (score / total_points * 100) if total_points > 0 else 0
+        
+        return JsonResponse({
+            'score': score,
+            'total_points': total_points,
+            'percentage': round(percentage, 1)
+        })
+        
+    except Exception as e:
+        print(f"Error processing quiz submission: {str(e)}")  # Add logging
+        return JsonResponse({'error': str(e)})
+    
+def profile(req) :
+    if 'user' in req.session:
+        user=User.objects.get(username=req.session['user'])
+        attempts=QuizAttempt.objects.filter(user=user)
+        print(attempts)
+        return render(req,'user/profile.html',{'user':user,'attempt':attempts})
 
+def about(req):
+    return render(req,'user/about.html')

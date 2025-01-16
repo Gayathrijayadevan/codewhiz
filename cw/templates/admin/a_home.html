@@ -146,7 +146,7 @@
     <nav class="nav flex-column">
         <a class="nav-link active" href="../"><i class="fas fa-home me-2"></i>Dashboard</a>
         <a class="nav-link" href="quize"><i class="fas fa-tasks me-2"></i>Quizzes & Questions</a>
-        <a class="nav-link" href="#"><i class="fas fa-users me-2"></i>Users</a>
+        <a class="nav-link" href="view_users"><i class="fas fa-users me-2"></i>Users</a>
         <a class="nav-link" href="logout"><i ></i>Logout</a>
 
     </nav>
@@ -173,8 +173,8 @@
                 <div class="card stats-card glow animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
                     <div class="card-body">
                         <h6 class="card-title">Active Users</h6>
-                        <h2 class="mb-0">156</h2>
-                        <small class="text-white-50">+12 today</small>
+                        <h2 class="mb-0">{{u}}</h2>
+                        <small class="text-white-50">ever logged in</small>
                     </div>
                 </div>
             </div>
@@ -184,17 +184,6 @@
                         <h6 class="card-title">Questions</h6>
                         <h2 class="mb-0">{{qns}}</h2>
                         <small class="text-white-50">Across all quizzes</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card stats-card glow animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
-                    <div class="card-body">
-                        <h6 class="card-title">Completion Rate</h6>
-                        <h2 class="mb-0">78%</h2>
-                        <div class="progress mt-2">
-                            <div class="progress-bar" style="width: 78%; background: rgba(255,255,255,0.5)"></div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -213,28 +202,20 @@
                                         <th>User</th>
                                         <th>Quiz</th>
                                         <th>Score</th>
-                                        <th>Time</th>
+                                        <th> Start Time</th>
+                                        <th>End Time</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>John Doe</td>
-                                        <td>Python Basics</td>
-                                        <td>85%</td>
-                                        <td>2 hours ago</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sarah Smith</td>
-                                        <td>React Fundamentals</td>
-                                        <td>92%</td>
-                                        <td>3 hours ago</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Mike Johnson</td>
-                                        <td>Node.js Basics</td>
-                                        <td>78%</td>
-                                        <td>5 hours ago</td>
-                                    </tr>
+                                    {% for a in attempts %}
+                                        <tr>
+                                            <td>{{a.user.first_name}}</td>
+                                            <td>{{a.quiz.title}}</td>
+                                            <td>{{a.score}}</td>
+                                            <td>{{a.start_time}}</td>
+                                            <td>{{a.end_time}}</td>
+                                        </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>

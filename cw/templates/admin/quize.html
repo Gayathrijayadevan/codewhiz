@@ -183,8 +183,9 @@
         <nav class="nav flex-column">
             <a class="nav-link active" href="../"><i class="fas fa-home me-2"></i>Dashboard</a>
             <a class="nav-link" href="quize"><i class="fas fa-tasks me-2"></i>Quizzes & Questions</a>
-            <a class="nav-link" href="#"><i class="fas fa-users me-2"></i>Users</a>
-        </nav>
+            <a class="nav-link" href="view_users"><i class="fas fa-users me-2"></i>Users</a>
+            <a class="nav-link" href="logout"><i ></i>Logout</a>        
+        </nav>        
     </div>
     
     <div class="content text-light">
@@ -261,17 +262,11 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <div class="progress" style="height: 5px;">
-                                    <div class="progress-bar bg-success" style="width: 85%"></div>
-                                </div>
-                                <small class="text-white-50">85% Completion Rate</small>
-                            </div>
+                            
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <span class="me-3"><i class="fas fa-user me-2"></i>156 Attempts</span><br> <br>
                                     <a href="qns/{{q.pk}}"><button class="btn btn-outline-light btn-sm">View Questions</button></a>
-                                    <a href=""><button class="btn btn-outline-light btn-sm">Add Questions</button></a>
+                                    <a href="{% url 'add_qns' %}"><button class="btn btn-outline-light btn-sm">Add Questions</button></a>
                                 </div>
                                 <div class="btn-group">
                                     <a href="edit_quize/{{q.pk}}">

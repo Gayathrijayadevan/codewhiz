@@ -29,8 +29,9 @@
     </style>
 </head>
 <body>
+    <a href="../"><button style="border: 1px solid; color:white; background:#0e1527;">Back</button></a>
     <div class="container mt-5"style=" background: white; border-radius: 15px; padding: 30px;">
-        <h2 class="text-center mb-4" style="color: #0e1527; font-weight: bold;">Add New Product</h2>
+        <h2 class="text-center mb-4" style="color: #0e1527; font-weight: bold;">Add Questions</h2>
         <form action="" method="post" class="p-4 shadow-sm bg-white rounded" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
@@ -78,7 +79,7 @@
                 <input type="text" class="form-control" name="correct" id="correct" value="{{data.is_correct}}" style="border-radius: 30px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
             </div>
             
-            <a href="{% url 'edit_qns' q.pk %}">
+            <a href="edit_qns/{{pk}}">
                 <button type="submit" class="btn btn-primary btn-block" style="background: #3498db; border: none; border-radius: 30px; padding: 10px; font-size: 1.1rem; font-weight: bold; transition: background 0.3s;"
             onmouseover="this.style.background='#2980b9';"
             onmouseout="this.style.background='#3498db';">Edit</button>
