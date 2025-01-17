@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Whiz - Question Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
@@ -19,31 +21,42 @@
             background: var(--dark-color);
             min-height: 100vh;
         }
-        .sidebar {
+        .navbar {
             background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
-            min-height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 250px;
-            z-index: 1000;
-            transition: all 0.3s ease;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
         }
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-            transition: all 0.3s ease;
+
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            transition: transform 0.3s ease;
         }
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-250px);
-            }
-            .content {
-                margin-left: 0;
-            }
-            .sidebar.active {
-                transform: translateX(0);
-            }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .nav-link {
+            color: white;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            margin: 5px 15px;
+            padding: 10px 15px;
+        }
+
+        .nav-link:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 1;
         }
         .question-card {
             background: rgba(255, 255, 255, 0.1);
@@ -102,20 +115,32 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="p-3 text-center">
-            <i class="fas fa-code fa-3x text-white mb-3 animate__animated animate__bounceIn"></i>
-            <h4 class="text-white mb-4">Code Whiz</h4>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand bounce-in" href="#"><i class="fas fa-code fa-2x text-white mb-3 animate__animated animate__bounceIn"><h4 class="text-white mb-4">Code Whiz</h4></i></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link " href="../"><i class="fas fa-home me-2"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'quize' %}" style="color: aliceblue;"><i class="fas fa-tasks me-2"></i>Quizzes & Questions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="view_users"><i class="fas fa-users me-2"></i>Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout"><i ></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <nav class="nav flex-column">
-            <a class="nav-link active" href="../a_home" style="color: aliceblue;"><i class="fas fa-home me-2"></i>Dashboard</a>
-            <a class="nav-link" href="{% url 'quize' %}" style="color: aliceblue;"><i class="fas fa-tasks me-2"></i>Quizzes & Questions</a>
-            <a class="nav-link" href="view_users" style="color: aliceblue;"><i class="fas fa-users me-2"></i>Users</a>
-            <a class="nav-link" href="logout" style="color: aliceblue;"><i ></i>Logout</a>        
-        </nav>
-    </div>
-    
+    </nav>
+
     <div class="content text-light p-4">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -169,7 +194,29 @@
             {% endfor %}
         </div>
     </div>
-    
+    {% block javascript %}
+    <script>
+                // Add this to your base template or a separate JS file
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.querySelector('.sidebar-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const content = document.querySelector('.content');
+
+            toggleBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+
+            // Optional: Close sidebar when clicking outside
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth <= 768) {  // Only on mobile
+                    if (!sidebar.contains(event.target) && !toggleBtn.contains(event.target)) {
+                        sidebar.classList.remove('active');
+                    }
+                }
+            });
+        });
+    </script>
+    {% endblock %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -21,33 +21,28 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .sidebar {
+        .navbar {
             background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
-            min-height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 250px;
-            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        .nav-link {
+            color: white;
+            opacity: 0.8;
             transition: all 0.3s ease;
+            border-radius: 10px;
+            margin: 5px 15px;
+            padding: 10px 15px;
         }
 
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-            transition: all 0.3s ease;
+        .nav-link:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
         }
 
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-250px);
-            }
-            .content {
-                margin-left: 0;
-            }
-            .sidebar.active {
-                transform: translateX(0);
-            }
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 1;
         }
 
         .card {
@@ -174,19 +169,31 @@
     </style>
 </head>
 <body>
-     <!-- Sidebar -->
-     <div class="sidebar">
-        <div class="p-3 text-center">
-            <i class="fas fa-code fa-3x text-white mb-3 animate__animated animate__bounceIn"></i>
-            <h4 class="text-white mb-4">Code Whiz</h4>
+      <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand bounce-in" href="#"><i class="fas fa-code fa-2x text-white mb-3 animate__animated animate__bounceIn"><h4 class="text-white mb-4">Code Whiz</h4></i></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link " href="../"><i class="fas fa-home me-2"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="quize"><i class="fas fa-tasks me-2"></i>Quizzes & Questions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="view_users"><i class="fas fa-users me-2"></i>Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout"><i ></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <nav class="nav flex-column">
-            <a class="nav-link active" href="../"><i class="fas fa-home me-2"></i>Dashboard</a>
-            <a class="nav-link" href="quize"><i class="fas fa-tasks me-2"></i>Quizzes & Questions</a>
-            <a class="nav-link" href="view_users"><i class="fas fa-users me-2"></i>Users</a>
-            <a class="nav-link" href="logout"><i ></i>Logout</a>        
-        </nav>        
-    </div>
+    </nav>
     
     <div class="content text-light">
         <!-- Header -->
